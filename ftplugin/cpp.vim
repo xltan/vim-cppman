@@ -74,13 +74,10 @@ function! s:Cppman(page)
   setl noma
   noremap <buffer> q :q!<CR>
 
-  if version < 600
-    syntax clear
-  elseif exists("b:current_syntax")
+  if exists("b:current_syntax")
     finish
   endif
 
-  syntax on
   syntax case ignore
   syntax match  manReference       "[a-z_:+-\*][a-z_:+-~!\*<>]\+([1-9][a-z]\=)"
   syntax match  manTitle           "^\w.\+([0-9]\+[a-z]\=).*"
@@ -95,32 +92,17 @@ function! s:Cppman(page)
   syntax region manSynopsis start="^SYNOPSIS"hs=s+8 end="^\u\+\s*$"me=e-12 keepend contains=manSectionHeading,@cppCode,manCFuncDefinition
   syntax region manSynopsis start="^EXAMPLE"hs=s+7 end="^       [^ ]"he=s-1 keepend contains=manSectionHeading,@cppCode,manCFuncDefinition
 
-  " Define the default highlighting.
-  " For version 5.7 and earlier: only when not done already
-  " For version 5.8 and later: only when an item doesn't have highlighting yet
-  if version >= 508 || !exists("did_man_syn_inits")
-    if version < 508
-      let did_man_syn_inits = 1
-      command -nargs=+ HiLink hi link <args>
-    else
-      command -nargs=+ HiLink hi def link <args>
-    endif
-
-    HiLink manTitle	    Title
-    HiLink manSectionHeading  Statement
-    HiLink manOptionDesc	    Constant
-    HiLink manLongOptionDesc  Constant
-    HiLink manReference	    PreProc
-    HiLink manSubHeading      Function
-    HiLink manCFuncDefinition Function
-
-    delcommand HiLink
-  endif
+  hi def link manTitle	    Title
+  hi def link manSectionHeading  Statement
+  hi def link manOptionDesc	    Constant
+  hi def link manLongOptionDesc  Constant
+  hi def link manReference	    PreProc
+  hi def link manSubHeading      Function
+  hi def link manCFuncDefinition Function
 
   """ Vim Viewer
   setl mouse=a
   setl colorcolumn=0
-
 
   let g:stack = []
 
@@ -144,5 +126,4 @@ endfunction
 
 command! -nargs=+ Cppman call s:Cppman(expand(<q-args>)) 
 setl keywordprg=:Cppman                                  
-setl iskeyword+=:,=,~,[,],*,!,<,>                        
 
