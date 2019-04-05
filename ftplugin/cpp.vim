@@ -106,7 +106,7 @@ function! s:Cppman(page)
 
   let g:stack = []
 
-  noremap <buffer> K :call LoadNewPage()<CR>
+  noremap <silent> <buffer> K :silent call LoadNewPage()<CR>
   map <buffer> <CR> K
   map <buffer> <C-]> K
   map <buffer> <2-LeftMouse> K
